@@ -1,0 +1,96 @@
+//****************************************************/
+// 定义 java 解析配置
+//****************************************************/
+option java_package                  = "com.appgame.analytics.aggregator.protobuf.generated";
+option java_outer_classname          = "AggregateProtos";
+option java_generic_services         = true;
+option java_generate_equals_and_hash = true;
+option optimize_for                  = SPEED;
+
+
+//****************************************************/
+// HBASE 扫描器相关描述
+//****************************************************/
+
+message NameBytesPair
+{
+  required string name  = 1;
+  optional bytes  value = 2;
+}
+
+message Column
+{
+  required bytes family    = 1;
+  repeated bytes qualifier = 2;
+}
+
+message Filter
+{
+  required string name   = 1;
+  optional bytes  filter = 2;
+}
+
+message TimeRange
+{
+  optional uint64 from = 1;
+  optional uint64 to   = 2;
+}
+
+enum Consistency
+{
+  STRONG   = 0;
+  TIMELINE = 1;
+}
+
+message Scan
+{
+    repeated Column         column          = 1;
+    repeated NameBytesPair  attribute       = 2;
+    optional bytes          start_row       = 3;
+    optional bytes          stop_row        = 4;
+    optional Filter         filter          = 5;
+    optional TimeRange      time_range      = 6;
+    optional uint32         max_versions    = 7 [default = 1   ];
+    optional bool           cache_blocks    = 8 [default = true];
+    optional uint32         batch_size      = 9;
+    optional uint64         max_result_size = 10;
+    optional uint32         store_limit     = 11;
+    optional uint32         store_offset    = 12;
+    optional bool           load_column_families_on_demand = 13;
+    optional bool           small           = 14;
+    optional bool           reversed        = 15 [default = false ];
+    optional Consistency    consistency     = 16 [default = STRONG];
+    optional uint32         caching         = 17;
+}
+
+
+//****************************************************/
+// 定义 RPC 调用接口
+//****************************************************/
+
+/**
+ * 被传递到 AggregateService 的聚合请求（包含两个部分）
+ * 1. 扫描器描述
+ * 2. 聚合器描述
+ */
+message AggregateRequest
+{
+    repeated Scan   scans = 1;
+    optional string pipes = 2;
+}
+
+/**
+ * 聚合请求应答
+ */
+message AggregateResponse
+{
+    optional bytes data = 1;
+}
+
+/**
+ * 定义聚合服务（定义聚合请求接口）
+ */
+service AggregateService
+{
+    rpc aggregate (AggregateRequest) returns (AggregateResponse);
+}

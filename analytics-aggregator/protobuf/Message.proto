@@ -1,0 +1,48 @@
+//****************************************************/
+// 定义 java 解析配置
+//****************************************************/
+option java_package                  = "com.appgame.analytics.aggregator.protobuf.generated";
+option java_outer_classname          = "MessageProtos";
+option java_generic_services         = true;
+option java_generate_equals_and_hash = true;
+option optimize_for                  = SPEED;
+
+
+//****************************************************/
+// 数据结构相关描述
+//****************************************************/
+
+
+message Object
+{
+    enum ObjectType
+    {
+        BOOLEAN     = 0;
+        INTEGER     = 1;
+        DOUBLE      = 2;
+        STRING      = 3;
+        OBJECT      = 4;
+        MAP         = 5;
+        LIST        = 6;
+    }
+    required ObjectType type  = 1;
+    required bytes      value = 2;
+}
+
+
+message List
+{
+    repeated Object value = 1;
+}
+
+
+message Entry
+{
+    required Object key   = 1;
+    required Object value = 2;
+}
+
+message Map
+{
+    repeated Entry value = 1;
+}

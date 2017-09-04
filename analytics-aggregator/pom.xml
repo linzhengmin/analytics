@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- 指定远程仓库 -->
+    <repositories>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
+    </repositories>
+
+    <!-- 当前 POM 版本 -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- 项目所属组织 -->
+    <groupId>com.appgame.analytics</groupId>
+    
+    <!-- 当前项目标识 -->
+    <artifactId>analytics-aggregator</artifactId>
+    
+    <!-- 当前项目版本 -->
+    <version>0.0.1</version>
+
+    <!-- 项目打包格式 -->
+    <packaging>jar</packaging>
+
+    <!-- 项目名称 -->
+    <name>analytics-aggregator</name>
+
+    <!-- 项目网站 -->
+    <url>http://analytics.appgame.com</url>
+
+    <!-- 项目描述 -->
+    <description>通用聚合器（仿照MongoDB, 为HBase实现类似聚合功能）</description>
+    
+    <!-- 项目属性集合 -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- 项目依赖配置集 -->
+    <dependencies>
+        <!-- 项目依赖配置项 -->
+		<dependency>
+			<groupId>org.apache.hbase</groupId>
+			<artifactId>hbase-it</artifactId>
+			<version>1.0.0-cdh5.4.4</version>
+			<exclusions>
+				<exclusion> 
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>provided</scope>
+		</dependency>
+        <!-- 项目依赖配置项 -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>2.6.1</version>
+		</dependency>
+        <!-- 项目依赖配置项 -->
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+        
+        <dependency>
+		    <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>1.7</version>
+            <scope>system</scope>
+            <systemPath>F:/jdk/lib/tools.jar</systemPath>
+		</dependency>
+    </dependencies>
+    
+    <!-- 项目构建配置项 -->
+    <build>
+        <!-- 源码目录 -->
+        <sourceDirectory>src</sourceDirectory>
+        <!-- 插件集合 -->
+        <plugins>
+           	<!-- 指定编译器 -->
+        	<plugin> 
+				<groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-compiler-plugin</artifactId> 
+				<configuration> 
+					<source>1.7</source> 
+					<target>1.7</target> 
+				</configuration> 
+			</plugin>
+            <!-- 项目打包 -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                	<source>1.7</source> 
+					<target>1.7</target> 
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
